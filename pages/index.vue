@@ -19,6 +19,10 @@
         placeholder="縦書きになって出てくる"
         :rows="9"
       />
+      <b-button :variant="'primary'" class="m-4" @click="doTweet">
+        <font-awesome-icon :icon="['fab', 'twitter']" />
+        ツイートする
+      </b-button>
     </div>
   </section>
 </template>
@@ -71,6 +75,16 @@ export default {
         outputText += gyou + '\r'
       })
       return outputText
+    },
+    tweet() {
+      return (
+        'https://twitter.com/intent/tweet?url=' +
+        encodeURIComponent(process.env.baseUrl) +
+        '&text=' +
+        encodeURIComponent(this.outputText) +
+        '%0a%0a%23' +
+        '縦書きツイートメーカーで作成'
+      )
     }
   },
   methods: {
@@ -82,6 +96,11 @@ export default {
         }
       })
       return maxWidthOfOutput
+    },
+    doTweet() {
+      if (process.browser) {
+        window.open(this.tweet)
+      }
     }
   }
 }
