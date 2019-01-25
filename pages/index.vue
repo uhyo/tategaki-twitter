@@ -46,14 +46,14 @@ export default {
     maxHeightOfinputGyous() {
       return this.inputGyous.length
     },
-    maxWidthOfinputGyous() {
+    maxWidthOfInputGyous() {
       return this.computeMaxWidhtOfArray(this.inputGyous)
     },
     outputGyous() {
       const outputGyous = []
 
       // 並び替える
-      for (let w = 0; w < this.maxWidthOfinputGyous; w++) {
+      for (let w = 0; w < this.maxWidthOfInputGyous; w++) {
         let outputGyou = ''
         for (let h = this.maxHeightOfinputGyous - 1; h >= 0; h--) {
           let char
@@ -89,13 +89,13 @@ export default {
   },
   methods: {
     computeMaxWidhtOfArray(array) {
-      let maxWidthOfOutput = 0
+      let maxWidthOfArray = 0
       array.forEach(element => {
-        if (element.length > maxWidthOfOutput) {
-          maxWidthOfOutput = element.length
+        if (element.length > maxWidthOfArray) {
+          maxWidthOfArray = element.length
         }
       })
-      return maxWidthOfOutput
+      return maxWidthOfArray
     },
     doTweet() {
       if (process.browser) {
