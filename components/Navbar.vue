@@ -4,7 +4,7 @@
       <b-navbar-toggle target="nav_collapse" />
 
       <b-navbar-brand href="#">
-        tategakiTwitter
+        縦書きったー
       </b-navbar-brand>
 
       <b-collapse id="nav_collapse" is-nav>

@@ -5,18 +5,21 @@
         縦書きったー
       </h1>
       <h2 class="subtitle">
-        ツイッターで俳句でも詠もう
+        縦書きツイートが簡単にできるサービス
       </h2>
+      <p class="text-muted">
+        ログインは必要ありません
+      </p>
       <b-form-textarea
         v-model="inputText"
         class="mt-4"
-        placeholder="俳句を詠もう"
+        placeholder="ここに入力しすると"
         :rows="3"
       />
       <b-form-textarea
         :value="outputText"
         class="mt-4"
-        placeholder="縦書きになって出てくる"
+        placeholder="縦書きになって出てきます"
         :rows="9"
       />
       <b-button :variant="'primary'" class="m-4" @click="doTweet">
@@ -83,7 +86,7 @@ export default {
         '&text=' +
         encodeURIComponent(this.outputText) +
         '%0a%0a%23' +
-        '縦書きツイートメーカーで作成'
+        '縦書きったーで作成'
       )
     }
   },
