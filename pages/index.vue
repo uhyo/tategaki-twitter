@@ -10,6 +10,15 @@
       <p class="text-muted">
         ログインは必要ありません
       </p>
+      <b-form-group label="" class="mt-3 mb-3 text-left">
+        <b-form-radio-group
+          v-model="isblankRowInsert"
+          buttons
+          button-variant="outline-primary"
+          size="sm"
+          :options="options"
+        />
+      </b-form-group>
       <b-form-textarea
         v-model="inputText"
         class="mt-4"
@@ -22,7 +31,7 @@
         placeholder="縦書きになって出てきます"
         :rows="9"
       />
-      <b-button :variant="'primary'" class="m-4" @click="doTweet">
+      <b-button :variant="'primary'" class="mt-3" @click="doTweet">
         <font-awesome-icon :icon="['fab', 'twitter']" />
         ツイートする
       </b-button>
@@ -31,53 +40,25 @@
 </template>
 
 <script>
+import _ from 'underscore'
 export default {
   data() {
     return {
-      inputText: ''
+      inputText: '',
+      isblankRowInsert: false,
+      options: [
+        { text: '通常モード', value: false },
+        { text: '一行飛ばし', value: true }
+      ]
     }
   },
   computed: {
-    inputGyous() {
-      const inputGyous = []
-      const strings = this.inputText.split(/\r\n|\r|\n/)
-      strings.forEach(string => {
-        inputGyous.push(string)
-      })
-      return inputGyous
-    },
-    maxHeightOfinputGyous() {
-      return this.inputGyous.length
-    },
-    maxWidthOfInputGyous() {
-      return this.computeMaxWidhtOfArray(this.inputGyous)
-    },
-    outputGyous() {
-      const outputGyous = []
-
-      // 並び替える
-      for (let w = 0; w < this.maxWidthOfInputGyous; w++) {
-        let outputGyou = ''
-        for (let h = this.maxHeightOfinputGyous - 1; h >= 0; h--) {
-          let char
-          if (w + 1 > this.inputGyous[h].length) {
-            char = '　'
-          } else {
-            char = this.inputGyous[h].substr(w, 1)
-          }
-          outputGyou += char
-        }
-        outputGyous.push(outputGyou)
-      }
-
-      return outputGyous
+    inputRows() {
+      const inputRows = this.inputText.split(/\r\n|\r|\n/)
+      return this.isblankRowInsert ? this.insertBlankRow(inputRows) : inputRows
     },
     outputText() {
-      let outputText = ''
-      this.outputGyous.forEach(gyou => {
-        outputText += gyou + '\r'
-      })
-      return outputText
+      return this.convertToVerticalWritingRows(this.inputRows).join('\r')
     },
     tweet() {
       return (
@@ -91,14 +72,31 @@ export default {
     }
   },
   methods: {
-    computeMaxWidhtOfArray(array) {
-      let maxWidthOfArray = 0
-      array.forEach(element => {
-        if (element.length > maxWidthOfArray) {
-          maxWidthOfArray = element.length
-        }
+    convertToVerticalWritingRows(inputRows) {
+      return this.joinEachRowChars(
+        this.replaceUndefinedToSpace(_.zip(...inputRows.reverse()))
+      )
+    },
+    replaceUndefinedToSpace(rows) {
+      return _.map(rows, row => {
+        return _.map(row, cell => {
+          return cell === undefined ? '　' : cell
+        })
       })
-      return maxWidthOfArray
+    },
+    joinEachRowChars(rows) {
+      return _.map(rows, row => {
+        return row.join('')
+      })
+    },
+    insertBlankRow(rows) {
+      const blankRowInsertedRows = []
+      rows.forEach(row => {
+        blankRowInsertedRows.push(row)
+        blankRowInsertedRows.push('')
+      })
+      blankRowInsertedRows.pop()
+      return blankRowInsertedRows
     },
     doTweet() {
       if (process.browser) {
@@ -112,5 +110,11 @@ export default {
 <style>
 .container {
   margin-top: 2em;
+}
+.title {
+  font-size: 40px;
+}
+.subtitle {
+  font-size: 20px;
 }
 </style>
