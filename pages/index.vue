@@ -67,7 +67,7 @@ export default {
         '&text=' +
         encodeURIComponent(this.outputText) +
         '%0a%0a%23' +
-        '縦書きったーで作成'
+        '縦書きったー%20で作成'
       )
     }
   },
