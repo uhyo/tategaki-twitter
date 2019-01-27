@@ -74,13 +74,22 @@ export default {
   methods: {
     convertToVerticalWritingRows(inputRows) {
       return this.joinEachRowChars(
-        this.replaceUndefinedToSpace(_.zip(...inputRows.reverse()))
+        this.replaceNobashibo(
+          this.replaceUndefinedToSpace(_.zip(...inputRows.reverse()))
+        )
       )
     },
     replaceUndefinedToSpace(rows) {
       return _.map(rows, row => {
         return _.map(row, cell => {
           return cell === undefined ? '　' : cell
+        })
+      })
+    },
+    replaceNobashibo(rows) {
+      return _.map(rows, row => {
+        return _.map(row, cell => {
+          return cell === 'ー' ? '｜' : cell
         })
       })
     },
