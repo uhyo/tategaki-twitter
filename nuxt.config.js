@@ -37,7 +37,13 @@ module.exports = {
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
-    'nuxt-fontawesome'
+    'nuxt-fontawesome',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-55008158-10'
+      }
+    ]
   ],
 
   fontawesome: {
