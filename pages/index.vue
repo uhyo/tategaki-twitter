@@ -41,6 +41,11 @@
 
 <script>
 import _ from 'underscore'
+import GraphemeSplitter from 'grapheme-splitter'
+
+const splitter = new GraphemeSplitter()
+const splitGraphemes = splitter.splitGraphemes.bind(splitter)
+
 export default {
   data() {
     return {
@@ -75,9 +80,14 @@ export default {
     convertToVerticalWritingRows(inputRows) {
       return this.joinEachRowChars(
         this.replaceNobashibo(
-          this.replaceUndefinedToSpace(_.zip(...inputRows.reverse()))
+          this.replaceUndefinedToSpace(
+            this.swapCellsAndRows(inputRows.reverse())
+          )
         )
       )
+    },
+    swapCellsAndRows(rows) {
+      return _.zip(...rows.map(splitGraphemes))
     },
     replaceUndefinedToSpace(rows) {
       return _.map(rows, row => {
